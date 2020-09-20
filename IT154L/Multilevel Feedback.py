@@ -150,7 +150,6 @@ def ShortestJobFirstP(a, b, p, w, ta, quantum_time, time, algorithm_count, compl
 
 			condition = False
 
-			print(process_dict)
 			for w in range(len(available_dict)):
 				if(process_dict[w][1] == 0):
 					process_dict[w][5] = 1
@@ -168,7 +167,6 @@ def ShortestJobFirstP(a, b, p, w, ta, quantum_time, time, algorithm_count, compl
 
 			
 	print("SJF-P:",process_list)
-	print(process_dict)
 	#check on what algorithm thereas
 	algorithm_count = algorithm_count + 1
 		
@@ -378,7 +376,6 @@ def PriorityP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_ti
 				break
 
 	print("P-P:",process_list)
-	print(process_dict)
 	#check on what algorithm thereas
 	algorithm_count = algorithm_count + 1
 		
@@ -496,11 +493,6 @@ def RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_t
 		process_dict[i] = [a[i], b[i],p[i], w[i], ta[i], 0]
 		i = i + 1
 	
-	#for process_unfinished in range(len(a)):
-	#	if(process_dict[process_unfinished][1] > 0 and process_dict[process_unfinished][0] <= time):
-	#		remaining_process = remaining_process + 1
-	
-	#######################LINE 474 ERROR, REMAINING PROCESS SOLVE#############################
 	while(is_process_executed <= remaining_process):
 
 		
@@ -560,25 +552,6 @@ def RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_t
 				available_dict.append(i)
 			i = i + 1
 
-
-
-
-		#print(process_list)
-		#print("IPE:", is_process_executed)
-		#print("AD:",available_dict)
-		#print("PP:",past_process)
-		#print("RP:",remaining_process)
-
-		#for y in range(size):
-			#if(process_dict[y][5] == 1)
-		#print(exception_handling_list)
-		#y = 0
-		#while y < len(available_dict):
-		#	print(available_dict[y])
-		#	y = y + 1
-			#if(available_dict[y] not in process_list):
-				#print(y)
-				#past_process.remove(available_dict[y])
 		if(len(available_dict) > 1):
 			if (available_dict[-1]+1 not in past_process ): #and available_dict[-1] + 1 not in process_list
 				for x in available_dict:
@@ -600,23 +573,7 @@ def RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_t
 
 		if(condition == True):
 			break
-		#print("EX:",exception_handling_list)
-		#print("PL:",process_list)
-		#if(process_list == exception_handling_list):
-			#break
-	#if(available_dict[-1] )
-	#remaining_process = remaining_process + 1
-	#print(available_dict)
-	#print(past_process)
-			#remain_process incrementor
-			#if(len(available_dict) > 1):
-			#	if(available_dict[-2] != available_dict[-1]):
-			#		remaining_process = remaining_process + 1
-	#print("WWWWWWWWWWWWWWWWWWWWWWWWWW")
-	#print("IPE:", is_process_executed)
-	#print("AD:",available_dict)
-	#print("PP:",past_process)
-	#print("RP:",remaining_process)
+
 	print("RR:",process_list)
 
 	#check on what algorithm thereas
@@ -657,7 +614,7 @@ def FirstAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completi
 	if(algorithm_first == 5):
 		PriorityNP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time)
 	if(algorithm_first == 6):
-		quantum_time = 1
+		quantum_time = 2
 		RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time)
 
 def SecondAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time):
@@ -673,7 +630,7 @@ def SecondAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, complet
 	if(algorithm_second == 5):
 		PriorityNP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time)
 	if(algorithm_second == 6):
-		quantum_time = 2
+		quantum_time = 1
 		RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time)
 
 def ThirdAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time):
@@ -692,20 +649,20 @@ def ThirdAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completi
 		RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time)
 
 #initialization
-a = [0,2,5,6,8]
-b = [10,2,4,2,5]
-p = [5,3,2,4,1]
-w = [0,0,0,0,0]
-ta = [0,0,0,0,0]
+a = [0,2,4,5]
+b = [7,4,1,4]
+p = [4,3,2,1]
+w = [0,0,0,0]
+ta = [0,0,0,0]
 quantum_time = 2
 time = 0
 
 completion_time = sum(b)
-algorithm_first = 2
+algorithm_first = 6
 	#quantum_time = 1
 algorithm_second = 6
 	#quantum_time = 2
-algorithm_third = 4
+algorithm_third = 3
 
 algorithm_count = 0
 
