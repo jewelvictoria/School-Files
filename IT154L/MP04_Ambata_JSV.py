@@ -763,6 +763,17 @@ def GanttChart(process_list):
         print(summary_chart[i+1],end='')
         i+=1
 
+def askUser():
+    question = input('\nDo you want to run again [y/n]? ')
+    if (question == 'y' or question == 'Y'):
+        os.system('cls')
+        main()
+    elif (question == 'n' or question == 'N'):
+        os.system('pause')
+    else:
+        print('Choose only between \'y\' or \'n\'')
+        askUser()
+
 def Finalization(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list, algorithm_first, algorithm_second, algorithm_third, QT_FirstAlgorithm, QT_SecondAlgorithm, QT_ThirdAlgorithm):
 	#Finalization
 	GanttChart(final_process_list)
@@ -795,6 +806,8 @@ def Finalization(a, b, p, w, ta, quantum_time, time, algorithm_count, completion
 	table.add_row(['AVERAGE', ave_TAT, ave_WT])
 	print(table)
 
+	askUser()
+
 
 #Global Declaration
 a = []
@@ -818,7 +831,6 @@ def main():
 		if y.isdigit():
 			values.append(int(y))
 	size = values[0]
-
 
 	#declare list
 	a = []
