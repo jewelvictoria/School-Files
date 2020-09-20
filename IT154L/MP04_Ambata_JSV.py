@@ -792,9 +792,15 @@ def main():
 	for i in range(3):
 		algo[i] = values [(size*3) + 1 + j]
 		if (algo[i] == 6):
-			QT[h] = values [(size*3) + 1 + j + 1]
-			j = j + 1
-			h = h + 1
+			if(algo[0] > 0 and QT[0] == 0 and algo[i] == algo[0]):
+				QT[0] = values [(size*3) + 1 + j + 1]
+				#j = j + 1
+			if(algo[1] > 0 and QT[1] == 0 and algo[i] == algo[1]):
+				QT[1] = values [(size*3) + 1 + j + 1]
+				j = j + 1
+			if(algo[2] > 0 and QT[2] == 0 and algo[i] == algo[2]):
+				QT[2] = values [(size*3) + 1 + j + 1]
+				#j = j + 1
 		j = j + 1
 	completion_time = sum(b)
 	#START OUTPUT
@@ -839,7 +845,5 @@ def main():
 	
 
 	FirstAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list, algorithm_first, algorithm_second, algorithm_third, QT_FirstAlgorithm, QT_SecondAlgorithm, QT_ThirdAlgorithm)
-
-
 
 main()
