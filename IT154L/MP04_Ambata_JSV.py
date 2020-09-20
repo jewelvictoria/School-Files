@@ -20,11 +20,8 @@ def FirstComeFirstServe(a, b, p, w, ta, quantum_time, time, algorithm_count, com
 
 	#First Come First Serve
 
-
-
 	while(time < sum_b):
 		available_dict = []
-
 		for i in range(len(a)):
 			if(process_dict[i][0] <= time and process_dict[i][1] > 0):
 				available_dict.append(i)
@@ -32,7 +29,7 @@ def FirstComeFirstServe(a, b, p, w, ta, quantum_time, time, algorithm_count, com
 		smallest = 999
 		smallest_index = 999
 		for j in available_dict:
-			if(process_dict[j][0] <= smallest and process_dict[j][1] > 0 ):
+			if(process_dict[j][0] < smallest and process_dict[j][1] > 0 ):
 				smallest = process_dict[j][0]
 				smallest_index = j
 
@@ -670,10 +667,105 @@ def ThirdAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completi
 		quantum_time = QT_ThirdAlgorithm
 		RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list, algorithm_first, algorithm_second, algorithm_third, QT_FirstAlgorithm, QT_SecondAlgorithm, QT_ThirdAlgorithm)
 
+def GanttChart(process_list):
+    print("\nGantt Chart:")
+    
+    #Display Gantt Chart
+    gantt = []
+    chart = process_list
+    similar = 1
+    for i in range(len(chart[:-1])):
+        if chart[i] == chart[i + 1]:
+            similar += 1
+        else:
+            gantt.append(similar)
+            similar = 1
+    gantt.append(similar)
+    summary_process = []
+    for i in range(len(chart[:-1])):
+        if chart[i] != chart[i + 1]:
+            summary_process.append(f"P{chart[i]}")
+    summary_process.append(f"P{chart[i]}")
+    summary_chart = [0]
+    for process in gantt:
+        summary_chart.append(max(summary_chart) + process)
+        
+    i=0
+    #printing top bar
+    print("\u250c", end='')
+    
+    while i+1 <= len(summary_process):
+        j=0
+        while j < summary_chart[i+1] - summary_chart[i]:
+            print("\u2500", end='')
+            j+=1
+        if i+1 < len(summary_process):
+            print("\u252c",end='')
+        elif i+1 == len(summary_process):
+            print("\u2510",end='')   
+        i+=1
+    
+    print("\n\u2502",end='')
+   
+    i=0
+    #middle position
+    while i+1 <= len(summary_process):
+        j=0
+        while j < summary_chart[i+1] - summary_chart[i] - 1:
+            print(" ", end='')
+            j+=1
+        print(summary_process[i],end='')
+        j=0
+        while j < summary_chart[i+1] - summary_chart[i] - 1:
+            print("", end='')
+            j+=1
+        print("",end='')
+        i+=1
+    
+    print("\n",end='')
+    
+    i=0
+    #printing bottom bar
+    print("\u2514", end='')
+    
+    while i+1 <= len(summary_process):
+        j=0
+        while j < summary_chart[i+1] - summary_chart[i]:
+            print("\u2500", end='')
+            j+=1
+        if i+1 < len(summary_process):
+            print("\u2534",end='')
+        elif i+1 == len(summary_process):
+            print("\u2518",end='')    
+        i+=1
+    
+    i=0
+    #printing waiting time
+    print("\n{}".format(summary_chart[0]),end='')
+    
+    while i+1 <= len(summary_process):
+        j=0
+        while j < summary_chart[i+1] - summary_chart[i] - 1:
+            print("", end='')
+            j+=1
+        print(" ",end='')
+        j=0
+        if summary_chart[i+1] < 100 and summary_chart[i+1] > 9:
+            j+=1
+        elif summary_chart[i+1] < 1000 and summary_chart[i+1] > 99:
+            j+=2
+        elif summary_chart[i+1] < 10000 and summary_chart[i+1] > 999:
+            j+=3
+        while j < summary_chart[i+1] - summary_chart[i] - 1:
+            print(" ", end='')
+            j+=1
+        
+        print(summary_chart[i+1],end='')
+        i+=1
 
 def Finalization(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list, algorithm_first, algorithm_second, algorithm_third, QT_FirstAlgorithm, QT_SecondAlgorithm, QT_ThirdAlgorithm):
 	#Finalization
-	print("\nFinal Process List:",final_process_list)
+	GanttChart(final_process_list)
 
 	print("\n\nTable: ")
 	size = len(a)
@@ -794,13 +886,13 @@ def main():
 		if (algo[i] == 6):
 			if(algo[0] > 0 and QT[0] == 0 and algo[i] == algo[0]):
 				QT[0] = values [(size*3) + 1 + j + 1]
-				#j = j + 1
+				j = j + 1
 			if(algo[1] > 0 and QT[1] == 0 and algo[i] == algo[1]):
 				QT[1] = values [(size*3) + 1 + j + 1]
 				j = j + 1
 			if(algo[2] > 0 and QT[2] == 0 and algo[i] == algo[2]):
 				QT[2] = values [(size*3) + 1 + j + 1]
-				#j = j + 1
+				j = j + 1
 		j = j + 1
 	completion_time = sum(b)
 	#START OUTPUT
