@@ -97,6 +97,7 @@ def ShortestJobFirstP(a, b, p, w, ta, quantum_time, time, algorithm_count, compl
 	process_list = []
 	size = len(a)
 	process_dict = dict()
+	past_process = []
 	i = 0
 	is_process_executed = 0
 
@@ -111,7 +112,6 @@ def ShortestJobFirstP(a, b, p, w, ta, quantum_time, time, algorithm_count, compl
 
 	while(is_process_executed < remaining_process):
 		available_dict = []
-		
 		for i in range(size):	
 			if(process_dict[i][0] <= time and process_dict[i][1] > 0 and process_dict[i][5] == 0): 
 				available_dict.append(i)
@@ -140,14 +140,32 @@ def ShortestJobFirstP(a, b, p, w, ta, quantum_time, time, algorithm_count, compl
 			process_list.append(smallest_index+1)
 			process_dict[smallest_index][1] = process_dict[smallest_index][1] - 1
 			time = time + 1
+
 			if(len(available_dict) == 1 and process_dict[smallest_index][1] == 0):
 				process_dict[smallest_index][5] = 1
+				past_process.append(smallest_index)
 				is_process_executed = is_process_executed + 1
 				
 			elif(len(process_list) > 1):
 				if(process_list[-2] != process_list[-1]):
 					process_dict[process_list[-2]-1][5] = 1
 					is_process_executed = is_process_executed + 1
+
+		condition = False
+
+		for w in range(len(past_process)):
+			if(process_dict[w][1] == 0):
+				process_dict[w][5] = 1
+
+		for v in range(len(past_process)):		
+			if(process_dict[v][5] == 1):
+				condition = True
+			else:
+				condition = False
+				break
+
+		if(condition == True):
+			break
 			
 	print("SJF-P:",process_list)
 	#check on what algorithm thereas
@@ -291,6 +309,7 @@ def PriorityP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_ti
 	size = len(a)
 	process_dict = dict()
 	i = 0
+	past_process = []
 
 	while (i<len(a)):
 		process_dict[i] = [a[i], b[i], p[i], w[i], ta[i], 0]
@@ -339,11 +358,29 @@ def PriorityP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_ti
 			if(len(available_dict) == 1 and process_dict[smallest_index][1] == 0):
 				process_dict[smallest_index][5] = 1
 				is_process_executed = is_process_executed + 1
+				past_process.append(smallest_index)
 				
 			elif(len(process_list) > 1):
 				if(process_list[-2] != process_list[-1]):
 					process_dict[process_list[-2]-1][5] = 1
 					is_process_executed = is_process_executed + 1
+
+			
+		condition = False
+
+		for w in range(len(past_process)):
+			if(process_dict[w][1] == 0):
+				process_dict[w][5] = 1
+
+		for v in range(len(past_process)):		
+			if(process_dict[v][5] == 1):
+				condition = True
+			else:
+				condition = False
+				break
+
+		if(condition == True):
+			break
 
 			
 
@@ -375,7 +412,6 @@ def PriorityP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_ti
 		Finalization(a, updated_b, updated_p, updated_w, updated_ta, quantum_time, time, algorithm_count, completion_time, final_process_list)
 	
 	
-
 def PriorityNP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list):
 	#Priority Non Preemptive
 
@@ -580,6 +616,7 @@ def RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_t
 	if(algorithm_count == 3):
 		Finalization(a, updated_b, updated_p, updated_w, updated_ta, quantum_time, time, algorithm_count, completion_time, final_process_list)
 	
+
 def FirstAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list):
 
 	#First Queue
@@ -610,7 +647,7 @@ def SecondAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, complet
 	if(algorithm_second == 5):
 		PriorityNP(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list)
 	if(algorithm_second == 6):
-		quantum_time = 3
+		quantum_time = 2
 		RoundRobin(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list)
 
 def ThirdAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list):
@@ -661,21 +698,23 @@ def Finalization(a, b, p, w, ta, quantum_time, time, algorithm_count, completion
 	table.add_row(['AVERAGE', ave_TAT, ave_WT])
 	print(table)
 
+
 #initialization
 a = [0,0,0,4,6,6,9,10]
-b = [9,3,3,5,5,4,4,3]
-p = [4,2,3,1,7,5,8,9]
+b = [9,3,4,5,7,2,4,3]
+p = [4,2,2,1,7,5,7,9]
 w = [0,0,0,0,0,0,0,0]
 ta = [0,0,0,0,0,0,0,0]
-quantum_time = 2
+quantum_time = 0
 time = 0
 
 completion_time = sum(b)
-algorithm_first = 6
+
+algorithm_first = 4
 	#quantum_time = 1
-algorithm_second = 2
+algorithm_second = 6
 	#quantum_time = 2
-algorithm_third = 1
+algorithm_third = 3
 
 algorithm_count = 0
 
@@ -683,4 +722,5 @@ final_process_list = []
 
 
 FirstAlgorithm(a, b, p, w, ta, quantum_time, time, algorithm_count, completion_time, final_process_list)
+
 
