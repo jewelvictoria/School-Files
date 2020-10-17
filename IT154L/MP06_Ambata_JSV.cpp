@@ -16,9 +16,59 @@ void initializeTableVector(vector<string> &table, int frameSize);
 void addEmptyFrameTableVector(vector<string> &table, int frameSize);
 void addFrameTableVector(vector<string> &table, int frameSize, int frameArray []);
 void printTable(vector<string> &table, string topString, int referenceStringSize, int frameSize);
+void mainProcess();
 
 ofstream efe;
-int main()
+int main(){
+	//File Input
+    ifstream linecount("MP06_check.txt"); //variable for line count
+	ifstream input("MP06_check.txt"); //variable for getting the data
+	
+    //Line Count
+    /*
+    Notes:
+    string_size
+    frame_size
+    ref_array[0-string_size]
+    */
+    
+    int num_lines = 0;
+    string line;
+    while (getline(linecount, line)){
+    	++num_lines;
+	}
+    
+    string data_array [num_lines];
+    int index = 0;
+    string in_line;
+	while(getline(input, in_line)){
+	    data_array[index] = in_line;
+	    index = index + 1;
+	}
+	
+	string ref_num = data_array[0];
+	int length;
+	length = atoi(ref_num.c_str());
+	
+
+  	istringstream iss(data_array[1]);
+  	string s;
+  	int ref_array [length];
+  	int in = 0;
+  	while ( getline( iss, s, ' ' ) ) {
+		ref_array[in] = atoi(s.c_str());
+		in = in + 1;
+  	}
+  	
+	int string_size = stoi(data_array[0]);
+	int frame_size = stoi(data_array[2]);
+	efe.open ("MP06_check.txt");
+	efe << string_size<<endl;
+	efe << data_array[1]<<endl;
+	efe << frame_size<<endl<<endl; 
+	mainProcess();
+}
+void mainProcess()
 {	
 			cout << "Programmed by: Jo Simon V. Ambata" << endl
 	    	<< "MP06 - OPTIMAL Page Replacement" << endl<< endl << endl;
@@ -84,6 +134,7 @@ int main()
 		{
 			reference_stringsize = string_size;
 			cout << "enter reference string size: "<<reference_stringsize<<endl;
+			
 			if(reference_stringsize <= 0)
 			{
 				throw reference_stringsize;
@@ -91,6 +142,8 @@ int main()
 			cout << "enter reference string:  ";
 		
 			referenceString = data_array[1];
+			
+			
 			if(referenceString.length() != reference_stringsize + (reference_stringsize-1))
 			{
 				throw reference_stringsize;
@@ -103,12 +156,11 @@ int main()
 			{
 				throw frameSize;
 			}
-			efe.open ("MP06_check.txt");
-			efe << string_size<<endl;
-			efe << data_array[1]<<endl;
-			efe << frame_size<<endl<<endl; 
 			efe << "Programmed by: Jo Simon V. Ambata" << endl;
-		    efe << "OPTIMAL Page Replacement" << endl << endl;
+		    efe << "MP06 - OPTIMAL Page Replacement" << endl << endl;
+		    efe << "enter reference string size: "<<reference_stringsize<<endl;
+			efe << "enter reference string:  "<<referenceString<<endl;
+			efe << "frame Size: "<<frame_size<<endl<<endl;
 		}
 		
 		
@@ -323,7 +375,7 @@ int main()
 			fflush(stdin);
 			cout << "Do you want to run again? [y/n]: ";
 			cin >> answer;
-			efe << "Do you want to run again? [y/n]: "<<answer;
+			efe << "Do you want to run again? [y/n]: "<<answer<<endl<<endl;
 			if(answer == "N" || answer == "n")
 			{
 				tryAgain = false;
@@ -332,7 +384,6 @@ int main()
 		
 
 	}while(tryAgain);
-	return 1;
 }
 
 void initializeTableVector(vector<string> &table, int frameSize)
