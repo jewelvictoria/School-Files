@@ -47,25 +47,26 @@ int main(){
   	
 	int cylinder_size = stoi(data_array[0]);
 	int head_queue = stoi(data_array[1]);
-	string queue_remove_negative = data_array[2].substr(0, data_array[2].find("-", 0));
+	string queue_remove_negative = data_array[2];
 	cout<<"Programmed by: Jo Simon V. Ambata"<<endl;
 	cout<<"MP08 - Disk Scheduling"<<endl<<endl;
 	cout<<"Inputs:(MP08_check.txt)"<<endl;
     cout<<"Max Cylinder Size: "<<cylinder_size<<endl;
     cout<<"Head Pointer Position: "<<head_queue<<endl;
-    cout<<"Queue: "<<queue_remove_negative<<endl<<endl;
+    cout<<"Queue: "<<queue_remove_negative<<endl;
 	
+	cout<<"Output (Screen & File):"<<endl;
 	//FIFO ===================================================================================================================================
 	vector <int> FIFO_queue;
 	FIFO_queue.push_back(head_queue);
 	for (int i=0; i<queue_size; i++){
     	FIFO_queue.push_back(queue[i]);
 	}
-	cout<< "FIFO: ";
+	/*cout<< "FIFO: ";
 	for(int i=0; i < FIFO_queue.size(); i++){	
    		cout <<FIFO_queue.at(i) << " ";
 	}
-	cout<<endl;
+	cout<<endl;*/
 	
 	//SSTF ===================================================================================================================================
 	//Based on the open-source code: https://japp.io/algorithms/shortest-seek-time-first-disk-scheduling-algorithm-in-c-c/
@@ -116,16 +117,17 @@ int main(){
     //printing the output array
     
 	vector<int> SSTF_queue;
-    cout<<"SSTF: ";
+	
+    //cout<<"SSTF: ";
     for(i=0;i<b.size();i++){
         SSTF_queue.push_back(b[i]);
         sum+=abs(b[i]-temp);
         temp=b[i];
     }
-    for(i=0;i<SSTF_queue.size();i++){
+    /*for(i=0;i<SSTF_queue.size();i++){
         cout<<SSTF_queue[i]<<" ";
     }
-    cout<<endl;
+    cout<<endl;*/
 
 	//SCAN ===================================================================================================================================
 	vector <int> L_scanqueue;
@@ -151,12 +153,12 @@ int main(){
 	//concatenating
 	vector<int> SCAN_queue(L_scanqueue);
 	SCAN_queue.insert(SCAN_queue.end(), R_scanqueue.begin(), R_scanqueue.end());
-	
+	/*
 	cout<< "SCAN: ";
 	for(int i=0; i < SCAN_queue.size(); i++){	
    		cout << SCAN_queue.at(i) << " ";
 	}
-	cout<< endl;
+	cout<< endl;*/
 	
 	//LOOK ===================================================================================================================================
 	vector <int> L_lookqueue;
@@ -182,12 +184,12 @@ int main(){
 	//concatenating
 	vector<int> LOOK_queue(L_lookqueue);
 	LOOK_queue.insert(LOOK_queue.end(), R_lookqueue.begin(), R_lookqueue.end());
-	cout<< "LOOK: ";
+	/*cout<< "LOOK: ";
 	for(int i=0; i < LOOK_queue.size(); i++){	
    		cout << LOOK_queue.at(i) << " ";
 	}
 	cout<< endl;
-	
+	*/
 	//C-SCAN ===================================================================================================================================
 	vector <int> L_cscanqueue;
 	vector <int> R_cscanqueue;
@@ -212,10 +214,10 @@ int main(){
 	//concatenating
 	vector<int> CSCAN_queue(R_cscanqueue);
 	CSCAN_queue.insert(CSCAN_queue.end(), L_cscanqueue.begin(), L_cscanqueue.end());
-	cout<< "C-SCAN: ";
+	/*cout<< "C-SCAN: ";
 	for(int i=0; i < CSCAN_queue.size(); i++){	
    		cout << CSCAN_queue.at(i) << " ";
-	}
+	}*/
 	cout<< endl;
 	
 	//C-LOOK ===================================================================================================================================
@@ -242,25 +244,176 @@ int main(){
 	//concatenating
 	vector<int> CLOOK_queue(R_clookqueue);
 	CLOOK_queue.insert(CLOOK_queue.end(), L_clookqueue.begin(), L_clookqueue.end());
-	cout<< "C-LOOK: ";
+	/*cout<< "C-LOOK: ";
 	for(int i=0; i < CLOOK_queue.size(); i++){	
    		cout << CLOOK_queue.at(i) << " ";
 	}
-	cout<< endl;
+	cout<< endl;*/
 	
 	//TABLE ==================================================================================================================================
-	//FIFO
+	//FIFO ==================================================================================================================================
 	vector<int> FIFO_traversed;
 	FIFO_traversed.push_back(0);
-	
 	int total_FIFO = 0;
 	int size_FIFO = 0;
+	
+	int disk_size;
+	vector<int> queueS;
+	vector<int> queueR;
+	
 	for(int l=1; l<FIFO_queue.size(); l++){
 		FIFO_traversed.push_back( abs(FIFO_queue[l] - FIFO_queue[l-1]));
 	}
+	cout<<"FIFO"<<endl;
+	//======================================================================================================================================
+	vector <int> FIFO_header(FIFO_queue);
+	FIFO_header.push_back(0);
+	sort(FIFO_header.begin(), FIFO_header.end()); 
+	FIFO_header.push_back(cylinder_size-1);
+	disk_size = cylinder_size;
+	queueR = FIFO_header;
+	queueS = FIFO_queue;
+	cout << "[Graph] "<< endl;
 	
-	cout<<endl<<endl<<"   FIFO"<<endl;
-    cout<<"|--------------------------------------------|";
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << ("===");
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << ("====");
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << ("=====");
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << endl;
+    cout << " ";
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if (i == queueR.size())
+            cout << queueR[i];
+        else
+            cout << queueR[i] << "  ";
+        
+    }
+    cout << " ";
+    cout << endl;
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << " " << endl;
+    for (int j = 0; j < queueS.size(); j++)
+    {
+        cout << " ";
+        for (int i = 0; i < queueS.size()+1; i++)
+        {
+            if(to_string(queueR[i]).size() == 1)
+            {
+                if(queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "   ";
+                else
+                    cout << "   ";
+            }
+            if (to_string(queueR[i]).size() == 2)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "    ";
+                else
+                    cout << "    ";
+            }
+            if (to_string(queueR[i]).size() == 3)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "     ";
+                else
+                    cout << "     ";
+            }
+            if (to_string(queueR[i]).size() == 4)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "      ";
+                else
+                    cout << "      ";
+            }
+            if (to_string(queueR[i]).size() == 5)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "       ";
+                else
+                    cout << "       ";
+            }
+        }
+        cout << " ";
+        cout << " " << endl;
+    }
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << "======";
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << "=======";
+        }
+    }
+	//======================================================================================================================================
+    cout<<"\n\n[Table]";
+	cout<<"\n|--------------------------------------------|";
 	cout <<"\n Next Track Accessed \t"<< "Next Track Traversed "<< endl;
 	cout<<"|--------------------------------------------|\n";
     cout << "\t" << FIFO_queue[0]<< "\t\t\t"<<"-" <<endl;
@@ -275,7 +428,7 @@ int main(){
     cout << " Average" << "\t\t\t" << FIFO_average << "\t\t"<<endl;
     cout<<"|--------------------------------------------|\n\n";
     
-    //SSTF
+    //SSTF ==================================================================================================================================
     vector<int> SSTF_traversed;
 	SSTF_traversed.push_back(0);
 	
@@ -284,8 +437,158 @@ int main(){
 	for(int l=1; l<SSTF_queue.size(); l++){
 		SSTF_traversed.push_back( abs(SSTF_queue[l] - SSTF_queue[l-1]));
 	}
-	cout<<endl<<endl<<"   SSTF"<<endl;
-    cout<<"|--------------------------------------------|";
+	cout<<endl<<endl<<"SSTF"<<endl;
+	
+	//======================================================================================================================================
+	vector <int> SSTF_header(SSTF_queue);
+	SSTF_header.push_back(0);
+	sort(SSTF_header.begin(), SSTF_header.end()); 
+	SSTF_header.push_back(cylinder_size-1);
+	disk_size = cylinder_size;
+	queueR = SSTF_header;
+	queueS = SSTF_queue;
+	cout << "[Graph]"<< endl;
+	
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << ("===");
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << ("====");
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << ("=====");
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << endl;
+    cout << " ";
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if (i == queueR.size())
+            cout << queueR[i];
+        else
+            cout << queueR[i] << "  ";
+        
+    }
+    cout << " ";
+    cout << endl;
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << " " << endl;
+    for (int j = 0; j < queueS.size(); j++)
+    {
+        cout << " ";
+        for (int i = 0; i < queueS.size() + 1; i++)
+        {
+            if(to_string(queueR[i]).size() == 1)
+            {
+                if(queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                	cout<<"O";
+                	
+                else if (i == queueS.size() - 1)
+                    cout << "   ";
+                else
+                    cout << "   ";
+            }
+            if (to_string(queueR[i]).size() == 2)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "    ";
+                else
+                    cout << "    ";
+            }
+            if (to_string(queueR[i]).size() == 3)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "     ";
+                else
+                    cout << "     ";
+            }
+            if (to_string(queueR[i]).size() == 4)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "      ";
+                else
+                    cout << "      ";
+            }
+            if (to_string(queueR[i]).size() == 5)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "       ";
+                else
+                    cout << "       ";
+            }
+        }
+        cout << " ";
+        cout << " " << endl;
+    }
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << "======";
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << "=======";
+        }
+    }
+	//======================================================================================================================================
+	cout<<"\n\n[Table]";
+    cout<<"\n|--------------------------------------------|";
 	cout <<"\n Next Track Accessed \t"<< "Next Track Traversed "<< endl;
 	cout<<"|--------------------------------------------|\n";
     cout << "\t" << SSTF_queue[0]<< "\t\t\t"<<"-" <<endl;
@@ -300,7 +603,7 @@ int main(){
     cout << " Average" << "\t\t\t" << SSTF_average << "\t\t"<<endl;
     cout<<"|--------------------------------------------|\n\n";
     
-    //SCAN
+    //SCAN ==================================================================================================================================
     vector<int> SCAN_traversed;
 	SCAN_traversed.push_back(0);
 	
@@ -309,8 +612,155 @@ int main(){
 	for(int l=1; l<LOOK_queue.size(); l++){
 		SCAN_traversed.push_back( abs(LOOK_queue[l] - LOOK_queue[l-1]));
 	}
-	cout<<endl<<endl<<"   SCAN"<<endl;
-    cout<<"|--------------------------------------------|";
+	cout<<endl<<endl<<"SCAN"<<endl;
+	
+	//======================================================================================================================================
+	vector <int> SCAN_header(SCAN_queue);
+	sort(SCAN_header.begin(), SCAN_header.end()); 
+	disk_size = cylinder_size;
+	queueR = SCAN_header;
+	queueS = SCAN_queue;
+	cout << "[Graph]"<< endl;
+	
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << ("===");
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << ("====");
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << ("=====");
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << endl;
+    cout << " ";
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if (i == queueR.size())
+            cout << queueR[i];
+        else
+            cout << queueR[i] << "  ";
+        
+    }
+    cout << " ";
+    cout << endl;
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << " " << endl;
+    for (int j = 0; j < queueS.size(); j++)
+    {
+        cout << " ";
+        for (int i = 0; i < queueS.size(); i++)
+        {
+            if(to_string(queueR[i]).size() == 1)
+            {
+                if(queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout<<"O";
+                else if (i == queueS.size() - 1)
+                    cout << "   ";
+                else
+                    cout << "   ";
+            }
+            if (to_string(queueR[i]).size() == 2)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "    ";
+                else
+                    cout << "    ";
+            }
+            if (to_string(queueR[i]).size() == 3)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "     ";
+                else
+                    cout << "     ";
+            }
+            if (to_string(queueR[i]).size() == 4)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "      ";
+                else 
+                    cout << "      ";
+            }
+            if (to_string(queueR[i]).size() == 5)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "       ";
+                else
+                    cout << "       ";
+            }
+        }
+        cout << " ";
+        cout << " " << endl;
+    }
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << "======";
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << "======="<<endl;
+        }
+    }
+	//======================================================================================================================================
+	cout<<"\n\n[Table]";
+    cout<<"\n|--------------------------------------------|";
 	cout <<"\n Next Track Accessed \t"<< "Next Track Traversed "<< endl;
 	cout<<"|--------------------------------------------|\n";
     cout << "\t" << LOOK_queue[0]<< "\t\t\t"<<"-" <<endl;
@@ -325,7 +775,7 @@ int main(){
     cout << " Average" << "\t\t\t" << SCAN_average << "\t\t"<<endl;
     cout<<"|--------------------------------------------|\n\n";
     
-    //LOOK
+    //LOOK ==================================================================================================================================
     vector<int> LOOK_traversed;
 	LOOK_traversed.push_back(0);
 	
@@ -334,8 +784,158 @@ int main(){
 	for(int l=1; l<LOOK_queue.size(); l++){
 		LOOK_traversed.push_back( abs(LOOK_queue[l] - LOOK_queue[l-1]));
 	}
-	cout<<endl<<endl<<"   LOOK"<<endl;
-    cout<<"|--------------------------------------------|";
+	cout<<endl<<endl<<"LOOK"<<endl;
+	
+	//======================================================================================================================================
+	vector <int> LOOK_header(LOOK_queue);
+	LOOK_header.push_back(0);
+	sort(LOOK_header.begin(), LOOK_header.end()); 
+	LOOK_header.push_back(cylinder_size-1);
+	disk_size = cylinder_size;
+	queueR = LOOK_header;
+	queueS = LOOK_queue;
+	cout << "[Graph] "<< endl;
+	
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << ("===");
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << ("====");
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << ("=====");
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << endl;
+    cout << " ";
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if (i == queueR.size())
+            cout << queueR[i];
+        else
+            cout << queueR[i] << "  ";
+        
+    }
+    cout << " ";
+    cout << endl;
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << " " << endl;
+    for (int j = 0; j < queueS.size(); j++)
+    {
+        cout << " ";
+        for (int i = 0; i < queueS.size() + 1; i++)
+        {
+            if(to_string(queueR[i]).size() == 1)
+            {
+                if(queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                	cout<<"O";
+                	
+                else if (i == queueS.size() - 1)
+                    cout << "   ";
+                else
+                    cout << "   ";
+            }
+            if (to_string(queueR[i]).size() == 2)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "    ";
+                else
+                    cout << "    ";
+            }
+            if (to_string(queueR[i]).size() == 3)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "     ";
+                else
+                    cout << "     ";
+            }
+            if (to_string(queueR[i]).size() == 4)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "      ";
+                else
+                    cout << "      ";
+            }
+            if (to_string(queueR[i]).size() == 5)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "       ";
+                else
+                    cout << "       ";
+            }
+        }
+        cout << " ";
+        cout << " " << endl;
+    }
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << "======";
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << "=======";
+        }
+    }
+	//======================================================================================================================================
+	cout<<"\n\n[Table]";
+    cout<<"\n|--------------------------------------------|";
 	cout <<"\n Next Track Accessed \t"<< "Next Track Traversed "<< endl;
 	cout<<"|--------------------------------------------|\n";
     cout << "\t" << LOOK_queue[0]<< "\t\t\t"<<"-" <<endl;
@@ -350,7 +950,7 @@ int main(){
     cout << " Average" << "\t\t\t" << LOOK_average << "\t\t"<<endl;
     cout<<"|--------------------------------------------|\n\n";
     
-    //C-SCAN
+    //C-SCAN ==================================================================================================================================
     vector<int> CSCAN_traversed;
 	CSCAN_traversed.push_back(0);
 	
@@ -359,8 +959,155 @@ int main(){
 	for(int l=1; l<CLOOK_queue.size(); l++){
 		CSCAN_traversed.push_back( abs(CLOOK_queue[l] - CLOOK_queue[l-1]));
 	}
-	cout<<endl<<endl<<"   C-SCAN"<<endl;
-    cout<<"|--------------------------------------------|";
+	cout<<endl<<endl<<"C-SCAN"<<endl;
+	
+	//======================================================================================================================================
+	vector <int> CSCAN_header(CSCAN_queue);
+	sort(CSCAN_header.begin(), CSCAN_header.end()); 
+	disk_size = cylinder_size;
+	queueR = CSCAN_header;
+	queueS = CSCAN_queue;
+	cout << "[Graph] "<< endl;
+	
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << ("===");
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << ("====");
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << ("=====");
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << endl;
+    cout << " ";
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if (i == queueR.size())
+            cout << queueR[i];
+        else
+            cout << queueR[i] << "  ";
+        
+    }
+    cout << " ";
+    cout << endl;
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << " " << endl;
+    for (int j = 0; j < queueS.size(); j++)
+    {
+        cout << " ";
+        for (int i = 0; i < queueS.size(); i++)
+        {
+            if(to_string(queueR[i]).size() == 1)
+            {
+                if(queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout<<"O";
+                else if (i == queueS.size() - 1)
+                    cout << "   ";
+                else
+                    cout << "   ";
+            }
+            if (to_string(queueR[i]).size() == 2)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "    ";
+                else
+                    cout << "    ";
+            }
+            if (to_string(queueR[i]).size() == 3)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "     ";
+                else
+                    cout << "     ";
+            }
+            if (to_string(queueR[i]).size() == 4)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "      ";
+                else
+                    cout << "      ";
+            }
+            if (to_string(queueR[i]).size() == 5)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "       ";
+                else
+                    cout << "       ";
+            }
+        }
+        cout << " ";
+        cout << " " << endl;
+    }
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << "======";
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << "======="<<endl;
+        }
+    }
+	//======================================================================================================================================
+	cout<<"\n\n[Table]";
+    cout<<"\n|--------------------------------------------|";
 	cout <<"\n Next Track Accessed \t"<< "Next Track Traversed "<< endl;
 	cout<<"|--------------------------------------------|\n";
     cout << "\t" << CLOOK_queue[0]<< "\t\t\t"<<"-" <<endl;
@@ -375,7 +1122,7 @@ int main(){
     cout << " Average" << "\t\t\t" << CSCAN_average << "\t\t"<<endl;
     cout<<"|--------------------------------------------|\n\n";
     
-    //C-LOOK
+    //C-LOOK ==================================================================================================================================
     vector<int> CLOOK_traversed;
 	CLOOK_traversed.push_back(0);
 	
@@ -384,8 +1131,156 @@ int main(){
 	for(int l=1; l<LOOK_queue.size(); l++){
 		CLOOK_traversed.push_back( abs(CLOOK_queue[l] - CLOOK_queue[l-1]));
 	}
-	cout<<endl<<endl<<"   C-LOOK"<<endl;
-    cout<<"|--------------------------------------------|";
+	cout<<endl<<endl<<"C-LOOK"<<endl;
+	//======================================================================================================================================
+	vector <int> CLOOK_header(CLOOK_queue);
+	CLOOK_header.push_back(0);
+	sort(CLOOK_header.begin(), CLOOK_header.end()); 
+	CLOOK_header.push_back(cylinder_size-1);
+	disk_size = cylinder_size;
+	queueR = CLOOK_header;
+	queueS = CLOOK_queue;
+	cout << "[Graph]"<< endl;
+	
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << ("===");
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << ("====");
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << ("=====");
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << endl;
+    cout << " ";
+    for(int i = 0; i < queueR.size(); i++)
+    {
+        if (i == queueR.size())
+            cout << queueR[i];
+        else
+            cout << queueR[i] << "  ";
+        
+    }
+    cout << " ";
+    cout << endl;
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << ("======");
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << ("=======");
+        }
+    }
+    cout << " " << endl;
+    for (int j = 0; j < queueS.size(); j++)
+    {
+        cout << " ";
+        for (int i = 0; i < queueS.size() + 1; i++)
+        {
+            if(to_string(queueR[i]).size() == 1)
+            {
+                if(queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout<<"O";
+                else if (i == queueS.size() - 1)
+                    cout << "   ";
+                else
+                    cout << "   ";
+            }
+            if (to_string(queueR[i]).size() == 2)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "    ";
+                else
+                    cout << "    ";
+            }
+            if (to_string(queueR[i]).size() == 3)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "     ";
+                else 
+                    cout << "     ";
+            }
+            if (to_string(queueR[i]).size() == 4)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "      ";
+                else
+                    cout << "      ";
+            }
+            if (to_string(queueR[i]).size() == 5)
+            {
+                if (queueS[j] == queueR[i] && (queueR[i] != disk_size))
+                    cout << "O" ;
+                else if (i == queueS.size() - 1)
+                    cout << "       ";
+                else
+                    cout << "       ";
+            }
+        }
+        cout << " ";
+        cout << " " << endl;
+    }
+    for (int i = 0; i < queueR.size(); i++)
+    {
+        if(to_string(queueR[i]).size() == 1)
+        {
+            cout << "===";
+        }
+        if(to_string(queueR[i]).size() == 2)
+        {
+            cout << "====";
+        }
+        if(to_string(queueR[i]).size() == 3)
+        {
+            cout << "=====";
+        }
+        if(to_string(queueR[i]).size() == 4)
+        {
+            cout << "======";
+        }
+        if(to_string(queueR[i]).size() == 5)
+        {
+            cout << "======="<<endl;
+        }
+    }
+	//======================================================================================================================================
+    cout<<"\n\n[Table]";
+	cout<<"\n|--------------------------------------------|";
 	cout <<"\n Next Track Accessed \t"<< "Next Track Traversed "<< endl;
 	cout<<"|--------------------------------------------|\n";
     cout << "\t" << CLOOK_queue[0]<< "\t\t\t"<<"-" <<endl;
@@ -399,6 +1294,7 @@ int main(){
     cout << " Total" << "\t\t\t\t" << total_CLOOK << "\t\t"<<endl;
     cout << " Average" << "\t\t\t" << CLOOK_average << "\t\t"<<endl;
     cout<<"|--------------------------------------------|\n\n";
+    
     
     
     
