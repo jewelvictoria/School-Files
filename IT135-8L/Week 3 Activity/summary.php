@@ -102,9 +102,11 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 			$item_counter = 1;
 			echo "<table class='table-php-items'>
 			 <tr>
-					 <th>Item Name</th>
+					 <th>Item</th>
 					 <th>Price</th>
 					 <th>Quantity</th>
+					 <th>Total</th>
+					 
 			 	</tr>";
 			
 			for($j=0 ; $j<count($this->selected_products) ; $j++){
@@ -113,6 +115,7 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 						 <td>".$this->selected_products[$j]->getProductName()."</td>
 						 <td>₱".number_format($this->selected_products[$j]->getProductPrice(), 2, '.', ',')."</td>
 						 <td>".$this->selected_products[$j]->getProductQuantity()."</td>
+						 <td>₱".number_format($this->selected_products[$j]->getProductPrice()*$this->selected_products[$j]->getProductQuantity(), 2, '.', ',')."</td>
 						</tr>";
 						$item_counter++;
 				}
@@ -168,7 +171,7 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 			
 			//Output Details
 			echo "<div class='receipt-php'>
-			 ===========================<br>
+			 =====================================<br>
 			 <table class='table-php-label'>
 			 <tr>
 			 <td>Name: </td>
@@ -191,9 +194,9 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 			 <td>".$this->customer_details->getPayment()."</td>
 			 </tr>
 			 </table>
-			 ===========================<br>";
+			 =====================================<br>";
 			 echo $this->getSelectedProducts();
-			 echo "===========================<br>
+			 echo "=====================================<br>
 			 <table class='table-php-label'>
 			 <tr>
 			 <td>Amount: </td>
@@ -225,7 +228,7 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 			 <td>₱".number_format($total_amount, 2, '.', ',')."</td>
 			 </tr>
 			 </table>
-			 ===========================<br>
+			 =====================================<br>
 			 </div>
 			 <div class='center-this'>
 			 <form method='POST' action='checkout.html'><input class='submit_button_holder' type='submit' value='Return'/></form>
@@ -236,16 +239,11 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 	$customer = new Customer($input_name, $input_contact, $input_address, $input_privilege, $input_payment);
 	$list_of_products = array();
 	
-	array_push($list_of_products, new Product($input_product_name[0], $input_product_price[0], $input_product_quantity[0]));
-	array_push($list_of_products, new Product($input_product_name[1], $input_product_price[1], $input_product_quantity[1]));
-	array_push($list_of_products, new Product($input_product_name[2], $input_product_price[2], $input_product_quantity[2]));
-	array_push($list_of_products, new Product($input_product_name[3], $input_product_price[3], $input_product_quantity[3]));
-	array_push($list_of_products, new Product($input_product_name[4], $input_product_price[4], $input_product_quantity[4]));
-	array_push($list_of_products, new Product($input_product_name[5], $input_product_price[5], $input_product_quantity[5]));
-	array_push($list_of_products, new Product($input_product_name[6], $input_product_price[6], $input_product_quantity[6]));
-	array_push($list_of_products, new Product($input_product_name[7], $input_product_price[7], $input_product_quantity[7]));
-	array_push($list_of_products, new Product($input_product_name[8], $input_product_price[8], $input_product_quantity[8]));
-	array_push($list_of_products, new Product($input_product_name[9], $input_product_price[9], $input_product_quantity[9]));
+	for($k=0 ; $k<count($input_product_quantity) ; $k++){
+		if($input_product_quantity[$k]>0){
+			array_push($list_of_products, new Product($input_product_name[$k], $input_product_price[$k], $input_product_quantity[$k]));
+		}
+	}
 	
 	$summary = new Summary($list_of_products,$customer);
 	$summary->getOutput();
