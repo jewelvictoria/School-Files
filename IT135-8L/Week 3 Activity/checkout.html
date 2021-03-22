@@ -1,0 +1,164 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Checkout - Ambata</title>
+	<link rel="stylesheet" type="text/css" href="LE2_CSS.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	
+</head>
+
+
+<body>
+
+	<form action="summary.php" method="post" >
+		<fieldset class="fieldset-style">
+			<h4>
+				<div class="field-title">
+					Register Information
+				</div>
+			</h4>
+			<div class="section">
+				<div class="section-text">User's Name</div>
+				<div class="section-text-placeholder"><input type="text" name="user_name" placeholder="e.g. Simon Ambata" size="27" required> <br><br></div>
+				<div class="section-text">Contact Number</div>
+				<div class="section-text-placeholder"><input type="number" name="contact_number" placeholder="e.g. 09178378631" size="27" required> <br><br></div>
+				<div class="section-text">Shipping Address</div>
+				<div class="section-text-placeholder"><input type="text" name="address" placeholder="e.g. 17 Venezia Alabang" size="27" required> <br><br></div>
+				
+			</div>
+		</fieldset>
+		
+		<br>
+		
+		<fieldset class="fieldset-style">
+			<h4>
+				<div class="field-title">
+					Select Product
+				</div>
+			</h4>
+			
+			<table class="table">
+				<tr>
+					<th>Product Name</th>
+					<th>Product Image</th>
+					<th>Price</th>
+					<th>Quantity</th>
+				</tr>
+				<tr>
+					<td>Biogesic 500mg<input type="hidden" name="medical_drug_name[]" value="Biogesic"></td>
+					<td><img src='biogesic.png' alt='Biogesic Image' class="image-style" width='200' height='200'></td>
+					<td>₱4.00<input type="hidden" name="medical_drug_price[]" value="4"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Allerta 10mg<input type="hidden" name="medical_drug_name[]" value="Allerta"></td>
+					<td><img src='allerta.png' alt='Allerta Image' class="image-style" width='200' height='200'></td>
+					<td>₱22.00<input type="hidden" name="medical_drug_price[]" value="22"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Solmux 500mg<input type="hidden" name="medical_drug_name[]" value="Solmux"></td>
+					<td><img src='solmux.png' alt='Solmux Image' class="image-style" width='200' height='200'></td>
+					<td>₱11.00<input type="hidden" name="medical_drug_price[]" value="11"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Ibuprofen 200mg<input type="hidden" name="medical_drug_name[]" value="Ibuprofen"></td>
+					<td><img src='ibuprofen.png' alt='Ibuprofen Image' class="image-style" width='200' height='200'></td>
+					<td>₱7.00<input type="hidden" name="medical_drug_price[]" value="7"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Conzace 500mg<input type="hidden" name="medical_drug_name[]" value="Conzace"></td>
+					<td><img src='conzace.png' alt='Conzace Image' class="image-style" width='200' height='200'></td>
+					<td>₱12.50<input type="hidden" name="medical_drug_price[]" value="12.50"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>ImmunPro 500mg<input type="hidden" name="medical_drug_name[]" value="ImmunPro"></td>
+					<td><img src='immunpro.png' alt='ImmunPro Image' class="image-style" width='200' height='200'></td>
+					<td>₱8.00<input type="hidden" name="medical_drug_price[]" value="8"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Enervon 500mg<input type="hidden" name="medical_drug_name[]" value="Enervon"></td>
+					<td><img src='enervon.png' alt='Enervon Image' class="image-style" width='200' height='200'></td>
+					<td>₱6.50<input type="hidden" name="medical_drug_price[]" value="6.50"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Decolgen 500mg<input type="hidden" name="medical_drug_name[]" value="Decolgen"></td>
+					<td><img src='decolgen.png' alt='Decolgen Image' class="image-style" width='200' height='200'></td>
+					<td>₱6.75<input type="hidden" name="medical_drug_price[]" value="6.75"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Neozep 500mg<input type="hidden" name="medical_drug_name[]" value="Neozep"></td>
+					<td><img src='neozep.png' alt='Neozep Image' class="image-style" width='200' height='200'></td>
+					<td>₱5.00<input type="hidden" name="medical_drug_price[]" value="5"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				<tr>
+					<td>Mefenamic 500mg<input type="hidden" name="medical_drug_name[]" value="Mefenamic"></td>
+					<td><img src='mefenamic.png' alt='Mefenamic Image' class="image-style" width='200' height='200'></td>
+					<td>₱5.61<input type="hidden" name="medical_drug_price[]" value="5.61"></td>
+					<td><input type="number" name="medical_drug_quantity[]" min="0" value="0" size="5"></td>
+				</tr>
+				
+			</table>
+		</fieldset>
+		
+		<br>
+		
+		<fieldset  class="fieldset-style">
+			<h4>
+				<div class="field-title">
+					Payment
+				</div>
+			</h4>
+		
+			<div class="center-this">
+				<div class="format-text-this">
+					<label style="font-weight:bold">Discount Privilege</label>
+					<br>
+					<select name="privilege" id="privilege">
+						<option value="none">None</option>
+						<option value="Student">Student</option>
+						<option value="Senior">Senior Citizen</option>
+						<option value="PWD">PWD</option>
+					</select>
+					
+					<br>
+					<br>
+					
+					<label style="font-weight:bold">Mode of Payment</label>
+					<br>
+					<input type="radio" id="Visa" name="payment" value="Visa" required>
+					<label for="Visa">Visa</label><img src='visa.png' alt='Visa Image' class="image-style" width='150' height='80'>
+					<input type="radio" id="Mastercard" name="payment" value="Mastercard" required>
+					<label for="Mastercard">Mastercard</label><img src='mastercard.jpg' alt='Mastercard Image' class="image-style" width='150' height='80'>
+					<input type="radio" id="GCash" name="payment" value="GCash" required>
+					<label for="GCash">GCash</label><img src='gcash.png' alt='GCash Image' class="image-style" width='150' height='80'><br>
+				</div>
+			</div>
+		
+		
+		</fieldset>
+		
+		
+		<br>
+		<div class="center-this">
+			<input type="submit" class="submit_button_holder" name="submit_button" value="Submit">
+		</div>
+	</form>
+	
+</body>
+
+<footer class="section-text">
+	Ambata, Jo Simon V.<br>
+	BM1 - 2018100711<br>
+	jsvambata@mymail.mapua.edu.ph
+</footer>
+
+</html>
