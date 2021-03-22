@@ -153,20 +153,45 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 		function getOutput(){ //outputs the receipt or confirmation of order
 			
 			//Declarations
+			$amount = $this->getTotalAmount();
+			$discount = $this->getDiscount($this->customer_details->getPrivilege());
 			$shipping_fee = 45;
 			$exempt_vat = 0;
-			$amount = 0;
+			$vat_value = 0;
 			$discounted_amount = 0;
 			$total_amount = 0;
-			$vat_value = 0;
-			$discount = 0;
+			$sale = 0;
 			
 			//Calculations
-			$discount = $this->getDiscount($this->customer_details->getPrivilege());
-			$amount = $this->getTotalAmount();
-			$discounted_amount = ($amount - ($discount*$this->getTotalAmount())) ;
-			$exempt_vat = $discounted_amount / (1 + $this->getVAT($this->customer_details->getPrivilege()));
-			$vat_value = $discounted_amount - $exempt_vat;
+			//output amount
+			
+			//output exempt vat
+			if($this->getVAT($this->customer_details->getPrivilege()) == 0){
+				$exempt_vat = $amount / 1.12;
+			}
+			else{
+				$exempt_vat = 0;
+			}
+			
+			//output discounted amount
+			if($exempt_vat > 0){
+				$discounted_amount = ($exempt_vat - ($discount*$exempt_vat)) ;
+			}
+			else{
+				$discounted_amount = ($amount - ($discount*$amount)) ;
+			}
+			/*if($exempt_vat == 0){
+				$sale = $discounted_amount / 1.12;
+				$vat_value = $discounted_amount - $sale;
+			}*/
+			if($exempt_vat == 0){
+				$sale = $amount / 1.12;
+				$vat_value = $amount - $sale;
+			}
+			else{
+				$vat_value = 0;
+			}
+			//output total amount
 			$total_amount = $discounted_amount + $shipping_fee;
 			
 			//Output Details
@@ -203,21 +228,20 @@ echo "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.3
 			 <td>₱".number_format($amount, 2, '.', ',')."</td>
 			 </tr>
 			 <tr>
-			 <tr>
-			 <td>Discount(".$this->customer_details->getPrivilege()."): </td>
-			 <td>₱".number_format($discount, 2, '.', ',')."</td>
-			 </tr>
-			 <tr>
-			 <td>Discounted Amount: </td>
-			 <td>₱".number_format($discounted_amount, 2, '.', ',')."</td>
-			 </tr>
-			 <tr>
 			 <td>Exempt VAT: </td>
 			 <td>₱".number_format($exempt_vat, 2, '.', ',')."</td>
 			 </tr>
 			 <tr>
 			 <td>VAT(". round((float)$this->getVAT($this->customer_details->getPrivilege()) * 100 ) ."%): </td> 
 			 <td>₱".number_format($vat_value, 2, '.', ',')."</td>
+			 </tr>
+			 <tr>
+			 <td>Discount(".$this->customer_details->getPrivilege()."): </td>
+			 <td>".round((float)number_format($discount, 2, '.', ',')* 100)."%</td>
+			 </tr>
+			 <tr>
+			 <td>Discounted Amount: </td>
+			 <td>₱".number_format($discounted_amount, 2, '.', ',')."</td>
 			 </tr>
 			 <tr>
 			 <td>Shipping Fee: </td>
